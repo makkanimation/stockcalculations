@@ -1,0 +1,94 @@
+
+<!-- saved from url=(0033)http://pricing.free.fr/BSphp.php3 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body data-new-gr-c-s-check-loaded="14.1024.0" data-gr-ext-installed="" cz-shortcut-listen="true"><center><h1>Black-Scholes in <a href="http://www.php.net/">php</a></h1></center>
+
+
+
+<form method="get">
+<table><tbody><tr><td><input type="radio" value="c" checked="" name="call_put_flag">Call</td></tr><tr><td><input type="radio" name="call_put_flag" value="p">Put</td></tr><tr><td>Spot</td><td><input type="text" name="S" size="5"></td></tr><tr><td>Strike</td><td><input type="text" name="X" size="5"></td></tr><tr><td>Years to Maturity</td><td><input type="text" name="T" size="5"></td></tr><tr><td>Risk Free rate</td><td><input type="text" name="r" size="5">%</td></tr><tr><td>Volatility</td><td><input type="text" name="v" size="5">%</td></tr></tbody></table><input type="submit" value="Calculate"></form><p>Fill <b>all</b> the blanks</p>
+
+<h2>Here is the source code of the present page</h2>
+
+<font size="2">
+<p>&lt;?<br>
+echo("&lt;form method=get &gt;\n");<br>
+echo("&lt;table&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;&lt;input type=\"radio\"
+value=\"c\" checked name=\"call_put_flag\"&gt;Call&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;&lt;input type=\"radio\" name=\"call_put_flag\"
+value=\"p\"&gt;Put&lt;/td&gt;&lt;/tr&gt;");<br>
+&nbsp;<br>
+echo("&lt;tr&gt;&lt;td&gt;Spot&lt;/td&gt;&lt;td&gt;&lt;input type=text
+name=S size=\"5\"&gt;&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;Strike&lt;/td&gt;&lt;td&gt;&lt;input type=text
+name=X size=\"5\"&gt;&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;Years to Maturity&lt;/td&gt;&lt;td&gt;&lt;input
+type=text name=T size=\"5\"&gt;&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;Risk Free rate&lt;/td&gt;&lt;td&gt;&lt;input
+type=text name=r size=\"5\"&gt;%&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;tr&gt;&lt;td&gt;Volatility&lt;/td&gt;&lt;td&gt;&lt;input type=text
+name=v size=\"5\"&gt;%&lt;/td&gt;&lt;/tr&gt;");<br>
+echo("&lt;/table&gt;");<br>
+echo("&lt;input type=submit value=Calculate&gt;&lt;/form&gt;");<br>
+// The cumulative normal distribution function<br>
+function CND ($x) {<br>
+$Pi = 3.141592653589793238;<br>
+$a1 = 0.319381530;<br>
+$a2 = -0.356563782;<br>
+$a3 = 1.781477937;<br>
+$a4 = -1.821255978;<br>
+$a5 = 1.330274429;<br>
+$L = abs($x);<br>
+$k = 1 / ( 1 + 0.2316419 * $L);<br>
+$p = 1 - 1 / pow(2 * $Pi, 0.5) * exp( -pow($L, 2) / 2 ) * ($a1 * $k + $a2 *
+pow($k, 2) + $a3 * pow($k, 3) + $a4 * pow($k, 4) + $a5 * pow($k, 5) );<br>
+if ($x &gt;= 0) {<br>
+return $p;<br>
+} else {<br>
+return 1-$p;<br>
+}<br>
+}<br>
+// The Black and Scholes (1973) Stock option formula<br>
+function BlackScholes ($call_put_flag, $S, $X, $T, $r, $v)<br>
+{<br>
+$r= $r / 100;<br>
+$v = $v / 100;<br>
+$d1 = ( log($S / $X) + ($r + pow($v, 2) / 2) * $T ) / ( $v * pow($T, 0.5) );<br>
+$d2 = $d1 - $v * pow($T, 0.5);<br>
+if ($call_put_flag == 'c') {<br>
+return $S * CND($d1) - $X * exp( -$r * $T ) * CND($d2);<br>
+$nom = "Call Price";<br>
+} else {<br>
+return $X * exp( -$r * $T ) * CND(-$d2) - $S * CND(-$d1);<br>
+$nom = 4;<br>
+//"Put Price";<br>
+}<br>
+}<br>
+if ( $S * $X * $T * $r * $v &lt;&gt; 0){<br>
+if ($call_put_flag == 'c') {<br>
+$nom = "Call Price";<br>
+} else {<br>
+$nom = "Call Price";}<br>
+$resultat = BlackScholes($call_put_flag, $S, $X, $T, $r, $v);<br>
+echo("&lt;p&gt;$nom : $resultat &lt;/p&gt;");<br>
+echo("&lt;p&gt;Spot: $S &lt;br&gt;");<br>
+echo("&lt;p&gt;Strike: $X &lt;br&gt;");<br>
+echo("&lt;p&gt;$T Years to Maturity&lt;br&gt;");<br>
+echo("&lt;p&gt;Risk free rate: $r % &lt;br&gt;");<br>
+echo("&lt;p&gt;Volatitlty: $v %&lt;/p&gt;");<br>
+} else {<br>
+echo("&lt;p&gt;Fill &lt;b&gt;all&lt;/b&gt; the blanks&lt;/p&gt;");<br>
+}<br>
+?&gt;</p>
+</font>
+
+
+
+
+
+
+<h2> Say Black-Scholes in JAVA, JavaScript, VBA, C++, Perl, Maple, Mathematica, Matlab, S-Plus, IDL, Pascal, Python, Fortran, Scheme, PHP and go to <a href="http://home.online.no/~espehaug/SayBlackScholes.html">Espen Gaarder Haug's Home Page</a></h2>
+<a href="http://be.nedstat.net/cgi-bin/viewstat?name=pricing&amp;taal=fr">
+<img src="http://be.nedstat.net/cgi-bin/nedstat.gif?name=pricing" border="0" alt="" width="2" height="2"></a>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
